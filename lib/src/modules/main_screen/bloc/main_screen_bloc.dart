@@ -19,6 +19,18 @@ class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
         super(const MainScreenState()) {
     on<SearchTextChanged>(_onSearchTextChanged);
     on<SearchResultIsReady>(_onSearchResultIsReady);
+    on<TickerSelected>(_onTickerSelected);
+  }
+
+  void _onTickerSelected(
+    TickerSelected event,
+    Emitter<MainScreenState> emit,
+  ) {
+    emit(state.copyWith(
+      selectedTicker: event.ticker,
+      searchText: '',
+      isSearching: false,
+    ));
   }
 
   void _onSearchResultIsReady(

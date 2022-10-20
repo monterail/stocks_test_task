@@ -22,6 +22,7 @@ class ServicesProvider extends StatelessWidget {
           create: (context) => TickersRepository(
             apiClient: context.read<ApiClient>().client,
             getTickerByName: getTickerByName,
+            getStockData: getStockData,
           ),
         ),
       ],

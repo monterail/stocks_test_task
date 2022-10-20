@@ -32,6 +32,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
         .add(SearchTextChanged(_controller.value.text));
   }
 
+  void _onListItemTap(SearchFieldListItem<SearchResultItem> item) {
+    _controller.text = '';
+    FocusManager.instance.primaryFocus?.unfocus();
+    context.read<MainScreenBloc>().add(TickerSelected(item.item!));
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,6 +46,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         child: BlocBuilder<MainScreenBloc, MainScreenState>(
           builder: (context, state) {
             return SearchField<SearchResultItem>(
+              onSuggestionTap: _onListItemTap,
               controller: _controller,
               searchInputDecoration: InputDecoration(
                 constraints: const BoxConstraints(

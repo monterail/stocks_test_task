@@ -22,3 +22,11 @@ class SearchResultIsReady extends MainScreenEvent
 
   const SearchResultIsReady(this.items);
 }
+
+@autoequalMixin
+class TickerSelected extends MainScreenEvent
+    with _$TickerSelectedAutoequalMixin {
+  final SearchResultItem ticker;
+
+  const TickerSelected(this.ticker);
+}
