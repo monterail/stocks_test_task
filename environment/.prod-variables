@@ -1,4 +1,4 @@
 APP_NAME_PROD = Stocks
 APP_SUFFIX_PROD = 
-POLYGON_API_KEY = gSxaAGV3qUwjJvBecbWAPipshDzEbWpy
-BASE_URL = https://api.polygon.io
+POLYGON_API_KEY_PROD = gSxaAGV3qUwjJvBecbWAPipshDzEbWpy
+BASE_URL_PROD = https://api.polygon.io

@@ -1,4 +1,0 @@
-APP_NAME_DEV = Stocks[dev]
-APP_SUFFIX_DEV = .dev
-POLYGON_API_KEY = gSxaAGV3qUwjJvBecbWAPipshDzEbWpy
-BASE_URL = https://api.polygon.io
