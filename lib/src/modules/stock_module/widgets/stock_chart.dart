@@ -1,10 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:template/src/modules/stock_module/bloc/stock_module_bloc.dart';
 import 'package:template/src/modules/stock_module/utils/stock_utils.dart';
 import 'package:template/src/repositories/tickers_repository/src/models/stock_data.dart';
+// ignore: depend_on_referenced_packages
 import 'package:collection/collection.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StockChart extends StatelessWidget {
   final List<StockData> stockData;
@@ -38,18 +38,23 @@ class StockChart extends StatelessWidget {
       )
       .toList();
 
-  List<LineTooltipItem> _getTooltipItems(List<LineBarSpot> touchedSpots) {
+  List<LineTooltipItem> _getTooltipItems(
+    List<LineBarSpot> touchedSpots,
+    BuildContext context,
+  ) {
     return touchedSpots
         .map((e) => LineTooltipItem(
-              'Date: ${StockUtils.getFormattedDateFromTs(stockData[e.spotIndex].timestamp)}\n',
+              '${AppLocalizations.of(context)!.date}: ${StockUtils.getFormattedDateFromTs(stockData[e.spotIndex].timestamp)}\n',
               const TextStyle(color: Colors.white),
               textAlign: TextAlign.start,
               children: [
                 TextSpan(
-                  text: 'Close price: \$${stockData[e.spotIndex].closePrice}\n',
+                  text:
+                      '${AppLocalizations.of(context)!.closePrice}: \$${stockData[e.spotIndex].closePrice}\n',
                 ),
                 TextSpan(
-                  text: 'Open price: \$${stockData[e.spotIndex].openPrice}',
+                  text:
+                      '${AppLocalizations.of(context)!.openPrice}: \$${stockData[e.spotIndex].openPrice}',
                 ),
               ],
             ))
@@ -81,7 +86,7 @@ class StockChart extends StatelessWidget {
             getTouchedSpotIndicator: _getTouchedSpotIndicator,
             touchTooltipData: LineTouchTooltipData(
               maxContentWidth: 300,
-              getTooltipItems: _getTooltipItems,
+              getTooltipItems: (data) => _getTooltipItems(data, context),
               tooltipRoundedRadius: 2,
               tooltipBorder: BorderSide.none,
             ),

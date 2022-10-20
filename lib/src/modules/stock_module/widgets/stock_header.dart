@@ -23,7 +23,7 @@ class StockHeader extends StatelessWidget {
         ],
       ),
       child: Text(
-        '${stockInfo.name} (${stockInfo.ticker})\n\$$priceToday',
+        '${stockInfo.name} (${stockInfo.ticker})\n\$${priceToday.toStringAsFixed(2)}',
         key: ValueKey(stockInfo.ticker),
         style: Theme.of(context).textTheme.headline6,
       ),

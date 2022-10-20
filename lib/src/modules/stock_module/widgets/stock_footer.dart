@@ -17,7 +17,11 @@ class _StockFooterState extends State<StockFooter>
 
   @override
   void initState() {
-    _controller = TabController(length: TimeRange.values.length, vsync: this);
+    _controller = TabController(
+      length: TimeRange.values.length,
+      vsync: this,
+      initialIndex: TimeRange.values.indexOf(TimeRange.twoYears),
+    );
     super.initState();
   }
 

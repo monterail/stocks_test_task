@@ -2,5 +2,9 @@
   "appTitle": "template",
   "@appTitle": {
     "description": "The title of the application"
-  }
+  },
+  "searchHint": "Enter a search term",
+  "closePrice": "Close price",
+  "openPrice": "Open price",
+  "date": "Date"
 }

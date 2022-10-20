@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:searchfield/searchfield.dart';
 import 'package:template/src/modules/main_screen/bloc/main_screen_bloc.dart';
 import 'package:template/src/repositories/tickers_repository/src/models/search_result_item.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   static const _height = 50.0;
@@ -66,7 +67,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 ),
                 focusColor: Colors.green,
                 border: const OutlineInputBorder(),
-                hintText: 'Enter a search term',
+                hintText: AppLocalizations.of(context)!.searchHint,
               ),
               itemHeight: 64,
               suggestions: state.resultItems
