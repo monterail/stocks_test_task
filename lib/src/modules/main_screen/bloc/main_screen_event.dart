@@ -8,15 +8,17 @@ abstract class MainScreenEvent extends Equatable {
 }
 
 @autoequalMixin
-class InitEvent extends MainScreenEvent with _$InitEventAutoequalMixin {}
+class SearchTextChanged extends MainScreenEvent
+    with _$SearchTextChangedAutoequalMixin {
+  final String newText;
+
+  const SearchTextChanged(this.newText);
+}
 
 @autoequalMixin
-class AddUserEvent extends MainScreenEvent with _$AddUserEventAutoequalMixin {}
+class SearchResultIsReady extends MainScreenEvent
+    with _$SearchResultIsReadyAutoequalMixin {
+  final List<SearchResultItem> items;
 
-@autoequalMixin
-class RemoveUserEvent extends MainScreenEvent
-    with _$RemoveUserEventAutoequalMixin {}
-
-@autoequalMixin
-class ReportSentryError extends MainScreenEvent
-    with _$ReportSentryErrorAutoequalMixin {}
+  const SearchResultIsReady(this.items);
+}

@@ -1,4 +1,4 @@
-APP_NAME_DEV = Dev app
+APP_NAME_DEV = Stocks[dev]
 APP_SUFFIX_DEV = .dev
-SENTRY_DSN_DEV = value
-SENTRY_ENVIRONMENT_DEV = development
+POLYGON_API_KEY = gSxaAGV3qUwjJvBecbWAPipshDzEbWpy
+BASE_URL = https://api.polygon.io

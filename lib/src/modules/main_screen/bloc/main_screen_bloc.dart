@@ -1,53 +1,72 @@
+import 'dart:async';
+
 import 'package:autoequal/autoequal.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:template/src/repositories/user_repository/user_repository.dart';
+import 'package:template/src/repositories/tickers_repository/src/models/search_result_item.dart';
+import 'package:template/src/repositories/tickers_repository/tickers_repository.dart';
 
-part 'main_screen_bloc.g.dart';
 part 'main_screen_event.dart';
 part 'main_screen_state.dart';
+part 'main_screen_bloc.g.dart';
 
 class MainScreenBloc extends Bloc<MainScreenEvent, MainScreenState> {
-  final UserRepository userRepository;
+  final ITickersRepository _tickersRepository;
+  Timer? _timer;
 
-  MainScreenBloc({required this.userRepository}) : super(InitState()) {
-    on<InitEvent>(_init);
-    on<AddUserEvent>(_saveUser);
-    on<RemoveUserEvent>(_removeUser);
-    on<ReportSentryError>(_handleReportSentryError);
+  MainScreenBloc({required ITickersRepository tickersRepository})
+      : _tickersRepository = tickersRepository,
+        super(const MainScreenState()) {
+    on<SearchTextChanged>(_onSearchTextChanged);
+    on<SearchResultIsReady>(_onSearchResultIsReady);
   }
 
-  Future<void> _init(InitEvent event, Emitter<MainScreenState> emit) async {
-    final user = await userRepository.getUser('userKey');
-    emit(MainScreenState(user: user));
+  void _onSearchResultIsReady(
+    SearchResultIsReady event,
+    Emitter<MainScreenState> emit,
+  ) {
+    emit(state.copyWith(resultItems: event.items, isSearching: false));
   }
 
-  Future<void> _saveUser(
-    AddUserEvent event,
+  Future<void> _onSearchTextChanged(
+    SearchTextChanged event,
     Emitter<MainScreenState> emit,
   ) async {
-    final user = User(pk: 1, firstName: 'Jan', lastName: 'Nowak');
-    await userRepository.saveUser('userKey', user);
-    emit(MainScreenState(user: user));
+    _timer?.cancel();
+
+    if (event.newText.length > state.searchText.length &&
+        event.newText.length > 2) {
+      _timer = Timer.periodic(
+        const Duration(milliseconds: 200),
+        _timerUpdater,
+      );
+    }
+
+    emit(state.copyWith(
+      searchText: event.newText,
+      resultItems: event.newText.isEmpty ? const [] : null,
+      isSearching: event.newText.isEmpty ? false : true,
+    ));
   }
 
-  Future<void> _removeUser(
-    RemoveUserEvent event,
-    Emitter<MainScreenState> emit,
-  ) async {
-    final user = await userRepository.getUser('userKey');
-    if (user != null) {
-      await userRepository.deleteUser('userKey', user);
-      emit(const MainScreenState());
+  void _timerUpdater(Timer timer) {
+    if (timer.tick > 3) {
+      _fetchSearch();
+      _timer?.cancel();
     }
   }
 
-  void _handleReportSentryError(
-    ReportSentryError event,
-    Emitter<MainScreenState> emit,
-  ) {
-    // This exception will be noted by global bloc observer,
-    // implemented in `services/sentry.dart`.
-    throw Exception('test exception');
+  Future<void> _fetchSearch() async {
+    final results = await _tickersRepository.searchTickerByName(
+      state.searchText,
+    );
+
+    add(SearchResultIsReady(results));
+  }
+
+  @override
+  Future<void> close() {
+    _timer?.cancel();
+    return super.close();
   }
 }
