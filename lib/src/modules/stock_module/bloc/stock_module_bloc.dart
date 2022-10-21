@@ -1,11 +1,14 @@
 import 'package:autoequal/autoequal.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http_status_code/http_status_code.dart';
 import 'package:template/src/modules/stock_module/utils/stock_utils.dart';
 import 'package:template/src/repositories/tickers_repository/src/models/search_result_item.dart';
 import 'package:template/src/repositories/tickers_repository/src/models/stock_data.dart';
 import 'package:template/src/repositories/tickers_repository/src/models/time_range.dart';
 import 'package:template/src/repositories/tickers_repository/tickers_repository.dart';
+import 'package:template/src/utils/bloc_exception.dart';
 
 part 'stock_module_event.dart';
 part 'stock_module_state.dart';
@@ -39,9 +42,21 @@ class StockModuleBloc extends Bloc<StockModuleEvent, StockModuleState> {
         stockData: stockData,
         stockItem: event.stockInfo,
         isLoading: false,
+        error: BlocError.none,
       ));
-    } catch (e) {
-      print(e);
+    } on DioError catch (e) {
+      final statusCode = e.response?.statusCode ?? 0;
+      switch (statusCode) {
+        case StatusCode.UNAUTHORIZED:
+          _emitErrorState(BlocError.unauthorized, emit);
+          break;
+        case StatusCode.TOO_MANY_REQUESTS:
+          _emitErrorState(BlocError.tooManyRequests, emit);
+          break;
+        default:
+          _emitErrorState(BlocError.serverError, emit);
+          break;
+      }
     }
   }
 
@@ -51,5 +66,13 @@ class StockModuleBloc extends Bloc<StockModuleEvent, StockModuleState> {
   ) {
     emit(state.copyWith(timeRange: event.newTimeRange));
     add(InitStockModule(stockInfo: state.stockItem!));
+  }
+
+  BlocException _emitErrorState(
+    BlocError error,
+    Emitter<StockModuleState> emit,
+  ) {
+    emit(state.copyWith(error: error));
+    return BlocException(error.text);
   }
 }

@@ -27,6 +27,7 @@ dependencies:
   fl_chart: ^0.55.2
   intl: ^0.17.0
   r_dotted_line_border: ^0.1.1
+  http_status_code: ^0.0.2
 
 dev_dependencies:
   auto_route_generator: ^5.0.2

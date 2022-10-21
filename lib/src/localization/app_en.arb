@@ -6,5 +6,8 @@
   "searchHint": "Enter a search term",
   "closePrice": "Close price",
   "openPrice": "Open price",
-  "date": "Date"
+  "date": "Date",
+  "tooManyRequests": "Too many requests",
+  "unauthorized": "Api key is not valid",
+  "serverError": "Server error"
 }

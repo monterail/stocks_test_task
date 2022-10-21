@@ -30,3 +30,10 @@ class TickerSelected extends MainScreenEvent
 
   const TickerSelected(this.ticker);
 }
+
+@autoequalMixin
+class ErrorHandled extends MainScreenEvent with _$ErrorHandledAutoequalMixin {
+  final BlocError error;
+
+  const ErrorHandled(this.error);
+}

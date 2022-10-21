@@ -6,12 +6,14 @@ class MainScreenState extends Equatable with _$MainScreenStateAutoequalMixin {
   final String searchText;
   final bool isSearching;
   final SearchResultItem? selectedTicker;
+  final BlocError error;
 
   const MainScreenState({
     this.resultItems = const [],
     this.searchText = '',
     this.isSearching = false,
     this.selectedTicker,
+    this.error = BlocError.none,
   });
 
   MainScreenState copyWith({
@@ -19,11 +21,13 @@ class MainScreenState extends Equatable with _$MainScreenStateAutoequalMixin {
     String? searchText,
     bool? isSearching,
     SearchResultItem? selectedTicker,
+    BlocError? error,
   }) =>
       MainScreenState(
         resultItems: resultItems ?? this.resultItems,
         searchText: searchText ?? this.searchText,
         isSearching: isSearching ?? this.isSearching,
         selectedTicker: selectedTicker ?? this.selectedTicker,
+        error: error ?? this.error,
       );
 }
