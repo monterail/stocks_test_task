@@ -19,7 +19,7 @@ dependencies:
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
-  dio: ^4.0.6
+  dio: ^5.0.3
   json_annotation: ^4.7.0
   keyboard_dismisser: ^3.0.0
   searchfield: ^0.7.1
